@@ -1,6 +1,7 @@
 import "./style.css";
 import "./node_modules/bootstrap/dist/js/bootstrap.bundle";
 
+
 const toDoForm = document.querySelector("#toDoForm");
 const inputForm = document.getElementById("form2");
 const toDoArr = [];
@@ -28,9 +29,13 @@ ex1Ul.addEventListener("click", (e) => {
     tasks.forEach((t) => {
       tabContent.innerHTML += `<li class="list-group-item d-flex align-items-center border-0 mb-2 rounded"
     style="background-color: #f4f6f7;">
-    <input class="form-check-input me-2" type="checkbox" value="" aria-label="..."  />${t.task}
-    
-  </li>`;
+    <input class="form-check-input me-2" type="checkbox" value="" aria-label="..."  />${t.task}</li>`;
     });
+  }else if(e.target.id === "ex1-tab-2"){
+    tasks.filter(t=>t.state===false).forEach(t=>{
+      tabContent.innerHTML += `<li class="list-group-item d-flex align-items-center border-0 mb-2 rounded"
+    style="background-color: #f4f6f7;">
+    <input class="form-check-input me-2" type="checkbox" value="" aria-label="..."  />${t.task}</li>`;
+    })
   }
 });
