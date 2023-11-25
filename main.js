@@ -94,4 +94,5 @@ function showToDo(todos) {
 
 window.addEventListener("load",()=>{
   showToDo(tasks)
+  
 })
