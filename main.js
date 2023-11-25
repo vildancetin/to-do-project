@@ -6,6 +6,9 @@ const inputForm = document.getElementById("form2");
 const buttons = document.getElementById("ex1");
 const tabContent = document.querySelector(".tab-content ul");
 
+
+const blockquoteP= document.querySelector(".blockquote p")
+const blockquoteCite= document.querySelector(".blockquote cite")
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
 const createToDo = () => {
@@ -24,35 +27,34 @@ const createToDo = () => {
 toDoForm.addEventListener("submit", (e) => {
   e.preventDefault();
   createToDo();
+  tabContent.textContent=""
+  showToDo(tasks)
   toDoForm.reset();
 });
 buttons.addEventListener("click", (e) => {
   tabContent.textContent = "";
   let filteredTodos;
   if (e.target.id === "ex1-tab-1") {
-    document.querySelectorAll('a').forEach(function(link) {
-      link.classList.remove("active","bg-primary");
-    });
-    e.target.classList.add("active","bg-primary")
+    removeClass(e)
     filteredTodos = tasks;
     showToDo(filteredTodos);
   } else if (e.target.id === "ex1-tab-2") {
-    document.querySelectorAll('a').forEach(function(link) {
-      link.classList.remove("active","bg-primary");
-    });
-    e.target.classList.add("active","bg-primary")
+    removeClass(e)
     filteredTodos = tasks.filter((todo) => !todo.checked);
     showToDo(filteredTodos);
   } else if (e.target.id === "ex1-tab-3") {
-    document.querySelectorAll('a').forEach(function(link) {
-      link.classList.remove("active","bg-primary");
-    });
-    e.target.classList.add("active","bg-primary")
+    removeClass(e)
     filteredTodos = tasks.filter((todo) => todo.checked === true);
     showToDo(filteredTodos);
   }
 });
 
+function removeClass(e) { 
+  document.querySelectorAll('a').forEach(function(link) {
+    link.classList.remove("active","bg-info");
+  });
+  e.target.classList.add("active","bg-info")
+ }
 function showToDo(todos) {
   todos.forEach((todo) => {
     const li = document.createElement("li");
@@ -70,8 +72,10 @@ function showToDo(todos) {
     const inputCheck = document.createElement("input");
     inputCheck.type = "checkbox";
     inputCheck.className = "form-check-input me-2 check";
+    inputCheck.style.backgroundColor="#FF5C7F"
     inputCheck.id = todo.id;
     inputCheck.checked = todo.checked;
+
 
     inputCheck.addEventListener("change", () => {
       todo.checked = inputCheck.checked;
@@ -94,5 +98,21 @@ function showToDo(todos) {
 
 window.addEventListener("load",()=>{
   showToDo(tasks)
-  
+  getApi()
 })
+
+const getApi=async ()=>{
+  try{
+      const res = await fetch("https://api.quotable.io/quotes/random")
+      if(!res.ok){
+        throw new Error(`HTTP error! Status:${res.status}`)
+      }
+      const data = await res.json()
+      const {author,content} = data[0]
+      blockquoteP.textContent=content
+      blockquoteCite.textContent=author
+  }catch(error){
+    console.log(`Error : `, error.message)
+  }
+
+}
