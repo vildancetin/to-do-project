@@ -1,16 +1,19 @@
 import "./style.css";
 import "./node_modules/bootstrap/dist/js/bootstrap.bundle";
 
+// ? declare variables
 const toDoForm = document.querySelector("#toDoForm");
-const inputForm = document.getElementById("form2");
 const buttons = document.getElementById("ex1");
 const tabContent = document.querySelector(".tab-content ul");
 
 
 const blockquoteP= document.querySelector(".blockquote p")
 const blockquoteCite= document.querySelector(".blockquote cite")
+
+// ? get data from local storage if data doesn't exist it create empty array
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
+// ? create data fonktion and push to local storage with object
 const createToDo = () => {
   const inputToDo = document.getElementById("form2").value.trim();
 
@@ -24,6 +27,8 @@ const createToDo = () => {
     localStorage.setItem("tasks", JSON.stringify(tasks));
   }
 };
+
+// ? when form submittied , it will craete todo and show to dom 
 toDoForm.addEventListener("submit", (e) => {
   e.preventDefault();
   createToDo();
@@ -31,6 +36,10 @@ toDoForm.addEventListener("submit", (e) => {
   showToDo(tasks)
   toDoForm.reset();
 });
+
+// ? when click buttons , it compare id and remove class according to that from a links.And again show to dom according to todo completed or not completed
+
+
 buttons.addEventListener("click", (e) => {
   tabContent.textContent = "";
   let filteredTodos;
@@ -46,15 +55,37 @@ buttons.addEventListener("click", (e) => {
     removeClass(e)
     filteredTodos = tasks.filter((todo) => todo.checked === true);
     showToDo(filteredTodos);
+    createDeleteBtn()
   }
 });
 
+// ? and last button create delete button to remove completed todos
+
+function createDeleteBtn(){
+  const btn = document.createElement("button")
+  btn.classList.add("btn","deleteBtn")
+  btn.textContent="Delete Completed"
+  tabContent.append(btn)
+
+  btn.addEventListener("click",()=>{
+    const confirmUser = confirm("Do you want to delete all completed?")
+    if(confirmUser){
+      tasks=tasks.filter(todo=>!todo.checked)
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+    tabContent.textContent=""
+    }
+    
+  })
+}
+// ? this function add active link a class and remove the others
 function removeClass(e) { 
   document.querySelectorAll('a').forEach(function(link) {
     link.classList.remove("active","bg-info");
   });
   e.target.classList.add("active","bg-info")
  }
+
+//  ? it create function to write to dom and add change event to checkboxes. it takes a station about completed.
 function showToDo(todos) {
   todos.forEach((todo) => {
     const li = document.createElement("li");
@@ -96,11 +127,13 @@ function showToDo(todos) {
   });
 }
 
+// ? when page loaded it runs
 window.addEventListener("load",()=>{
   showToDo(tasks)
   getApi()
 })
 
+// ? it send a request to api to get random quotes and shows to user
 const getApi=async ()=>{
   try{
       const res = await fetch("https://api.quotable.io/quotes/random")

@@ -33,3 +33,12 @@ blockquote cite{
 a .active{
   background-color: #0DCAF0;
 }
+
+.deleteBtn{
+  color: white;
+  background-color: #FF5C7F;
+  margin: auto;
+}
+.deleteBtn:hover{
+  color: #FF5C7F;
+}
