@@ -1,4 +1,6 @@
 # to-do-project
+![todosapp](https://github.com/vildancetin/to-do-project/assets/75564722/b2a0821e-3aa4-45ec-b0a3-3f36d1b20740)
+
 ### Starter
 I initially created a Vite project using the command```npm create vite@latest```.
 This project allows users to add new tasks and mark them as completed. Additionally, each time the page loads, it retrieves random quotes from an API.
@@ -28,3 +30,5 @@ const res = await fetch("https://api.quotable.io/quotes/random")
 ```
 - The project retrieves data from an API to display random quotes to the user. This is achieved through the use of the Fetch API and an asynchronous/await structure.- 
 Upon page load, the application fetches data from the API and dynamically writes it to the DOM along with the respective author information.
+
+[Demo](https://todoswithwquotes.netlify.app/)
